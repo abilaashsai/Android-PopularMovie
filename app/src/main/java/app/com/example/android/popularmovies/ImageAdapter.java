@@ -48,10 +48,25 @@ public class ImageAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView= new ImageView(mContext);
+        View view;
+       if(convertView==null){
 
-        Picasso.with(mContext).load((String) aa.get(position)).into(imageView);
-        return imageView;
+            view = new ImageView(mContext);
+        }
+            else {
+
+        view= convertView;
+        }
+        Picasso.with(mContext)
+                .load((String) aa.get(position))
+                .placeholder(R.drawable.loading)
+                .error(R.drawable.no_data)
+                .into((ImageView) view);
+
+        return view;
+
+
+
     }
 
 }
