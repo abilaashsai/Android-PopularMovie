@@ -16,10 +16,13 @@
 
     <GridView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:numColumns="auto_fit"
+        android:layout_height="fill_parent"
         android:gravity="center"
+        android:choiceMode="singleChoice"
+        android:numColumns="auto_fit"
+        android:layout_gravity="fill"
+        android:layout_alignParentTop="true"
         android:stretchMode="columnWidth"
-        android:id="@+id/grid_view"/>
+        android:id="@+id/grid_view" />
 
 </LinearLayout>

@@ -22,7 +22,9 @@ public class DFetchData extends AsyncTask<String, Void, Void> {
     String user_rating;
     String release_date;
     String icon;
+    String trailer_l;
     Call<JsonWork> call;
+    Call<TrailerFetch> trailerFetchCall;
 
 
     public DFetchData(DetailActivityFragment detailActivityFragment) {
@@ -48,8 +50,7 @@ public class DFetchData extends AsyncTask<String, Void, Void> {
                     .baseUrl(baseUrl)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-
-            PopularMovieUrl service = retrofit.create(PopularMovieUrl.class);
+                        PopularMovieUrl service = retrofit.create(PopularMovieUrl.class);
 
             call = service.getUser(BuildConfig.OPEN_MOVIE_DB_API_KEY);
             Response<JsonWork> response=call.execute();
@@ -59,6 +60,23 @@ public class DFetchData extends AsyncTask<String, Void, Void> {
                     original_title = response.body().getResults().get(i).getOriginalTitle();
                     plot_synopsis = response.body().getResults().get(i).getOverview();
                     String user_rat=response.body().getResults().get(i).getVoteAverage();
+
+                    String trailer_id= String.valueOf(response.body().getResults().get(i).getId());
+                    String trailer_baseUrl = "http://api.themoviedb.org/3/movie/"+trailer_id+"/";
+                    Retrofit trailer_retrofit = new Retrofit.Builder()
+                            .baseUrl(trailer_baseUrl)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+
+                    PopularMovieUrl_Trailer trailer_service = trailer_retrofit.create(PopularMovieUrl_Trailer.class);
+
+                    trailerFetchCall = trailer_service.getUser(BuildConfig.OPEN_MOVIE_DB_API_KEY);
+
+                    Response<TrailerFetch> trailer_fetch=trailerFetchCall.execute();
+
+                    trailer_l= "https://www.youtube.com/watch?v="+trailer_fetch.body().getResults().get(0).getKey();
+
                     user_rating = user_rat;
 
                     release_date = response.body().getResults().get(i).getReleaseDate();
@@ -87,10 +105,14 @@ call.cancel();
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         try {
+            detailActivityFragment.trailer_lin.setText(trailer_l);
             detailActivityFragment.original_t.setText(original_title);
             detailActivityFragment.plot_s.setText(plot_synopsis);
             detailActivityFragment.user_r.setText(user_rating);
             detailActivityFragment.release_d.setText(release_date);
+
+
+           // detailActivityFragment.trailer_vid.setVideoPath(trailer_l);
             Picasso.with(detailActivityFragment.getContext())
                     .load("http://image.tmdb.org/t/p/w92/" + icon)
                     .into(detailActivityFragment.movie_p);

@@ -6,4 +6,6 @@
     <color name="background">#CFD8DC</color>
     <color name="title">#2E3D49</color>
     <color name="line">#EF7623</color>
+    <color name="shadow">#555555</color>
+
 </resources>

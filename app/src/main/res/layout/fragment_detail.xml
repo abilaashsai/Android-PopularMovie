@@ -116,6 +116,10 @@
             android:gravity="center"
             android:textColor="@color/title"
             /></LinearLayout>
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/trailer_link"/>
 
     <View
         android:layout_width="match_parent"
