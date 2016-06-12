@@ -29,8 +29,8 @@ public class DFetchData extends AsyncTask<String, Void, Void> {
 
     public DFetchData(DetailActivityFragment detailActivityFragment) {
         this.detailActivityFragment = detailActivityFragment;
-    }
 
+    }
 
 
     @Override
@@ -41,28 +41,28 @@ public class DFetchData extends AsyncTask<String, Void, Void> {
         // Will contain the raw JSON response as a string.
 
         try {
+
             // Construct the URL for the OpenWeatherMap query
             // Possible parameters are avaiable at OWM's forecast API page, at
             // http://openweathermap.org/API#forecast
-            String baseUrl = "http://api.themoviedb.org/3/movie/" + params[0]+"/";
+            String baseUrl = "http://api.themoviedb.org/3/movie/" + params[0] + "/";
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-                        PopularMovieUrl service = retrofit.create(PopularMovieUrl.class);
+            PopularMovieUrl service = retrofit.create(PopularMovieUrl.class);
 
             call = service.getUser(BuildConfig.OPEN_MOVIE_DB_API_KEY);
-            Response<JsonWork> response=call.execute();
-            String[] mStringArray=new String[response.body().getResults().size()];
-            for(int i=0;i<response.body().getResults().size();i++){
+            Response<JsonWork> response = call.execute();
+            String[] mStringArray = new String[response.body().getResults().size()];
+            for (int i = 0; i < response.body().getResults().size(); i++) {
                 if (detailActivityFragment.img_string.contains(response.body().getResults().get(i).getPosterPath())) {
                     original_title = response.body().getResults().get(i).getOriginalTitle();
                     plot_synopsis = response.body().getResults().get(i).getOverview();
-                    String user_rat=response.body().getResults().get(i).getVoteAverage();
-
-                    String trailer_id= String.valueOf(response.body().getResults().get(i).getId());
-                    String trailer_baseUrl = "http://api.themoviedb.org/3/movie/"+trailer_id+"/";
+                    String user_rat = response.body().getResults().get(i).getVoteAverage();
+                    String trailer_id = String.valueOf(response.body().getResults().get(i).getId());
+                    String trailer_baseUrl = "http://api.themoviedb.org/3/movie/" + trailer_id + "/";
                     Retrofit trailer_retrofit = new Retrofit.Builder()
                             .baseUrl(trailer_baseUrl)
                             .addConverterFactory(GsonConverterFactory.create())
@@ -73,10 +73,9 @@ public class DFetchData extends AsyncTask<String, Void, Void> {
 
                     trailerFetchCall = trailer_service.getUser(BuildConfig.OPEN_MOVIE_DB_API_KEY);
 
-                    Response<TrailerFetch> trailer_fetch=trailerFetchCall.execute();
+                    Response<TrailerFetch> trailer_fetch = trailerFetchCall.execute();
 
-                    trailer_l= "https://www.youtube.com/watch?v="+trailer_fetch.body().getResults().get(0).getKey();
-
+                    trailer_l = trailer_fetch.body().getResults().get(0).getKey();
                     user_rating = user_rat;
 
                     release_date = response.body().getResults().get(i).getReleaseDate();
@@ -88,14 +87,14 @@ public class DFetchData extends AsyncTask<String, Void, Void> {
                 }
 
             }
-                    return null;
+            return null;
 
-                } catch (Exception e){
+        } catch (Exception e) {
             Log.e(LOG_TAG, "Error ", e);
 
         } finally {
 
-call.cancel();
+            call.cancel();
         }
 
         return null;
@@ -105,16 +104,16 @@ call.cancel();
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         try {
-            detailActivityFragment.trailer_lin.setText(trailer_l);
+            Config.YOUTUBE_VIDEO_CODE = trailer_l;
+            detailActivityFragment.showYouTubeImageButton();
             detailActivityFragment.original_t.setText(original_title);
             detailActivityFragment.plot_s.setText(plot_synopsis);
             detailActivityFragment.user_r.setText(user_rating);
             detailActivityFragment.release_d.setText(release_date);
 
-
-           // detailActivityFragment.trailer_vid.setVideoPath(trailer_l);
+            // detailActivityFragment.trailer_vid.setVideoPath(trailer_l);
             Picasso.with(detailActivityFragment.getContext())
-                    .load("http://image.tmdb.org/t/p/w92/" + icon)
+                    .load("http://image.tmdb.org/t/p/w185/" + icon)
                     .into(detailActivityFragment.movie_p);
         } catch (Exception e) {
             Log.e(LOG_TAG, "Error on post execute", e);

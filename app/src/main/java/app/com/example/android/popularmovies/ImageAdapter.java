@@ -57,6 +57,7 @@ public class ImageAdapter extends BaseAdapter{
 
         view= convertView;
         }
+
         Picasso.with(mContext)
                 .load((String) aa.get(position))
                 .placeholder(R.drawable.loading)

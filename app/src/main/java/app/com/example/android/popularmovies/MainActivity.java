@@ -1,26 +1,46 @@
 package app.com.example.android.popularmovies;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainActivityFragment.Callback{
+    private static final String DETAILFRAGMENT_TAG = "DFTAG";
+    private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+                if (findViewById(R.id.weather_detail_container) != null) {
+                        // The detail container view will be present only in the large-screen layouts
+                                // (res/layout-sw600dp). If this view is present, then the activity should be
+                                        // in two-pane mode.
+                                                mTwoPane = true;
+                        // In two-pane mode, show the detail view in this activity by
+                                // adding or replacing the detail fragment using a
+                                        // fragment transaction.
+                                                if (savedInstanceState == null) {
+                                getSupportFragmentManager().beginTransaction()
+                                                .replace(R.id.weather_detail_container, new DetailActivityFragment())
+                                                .commit();
+                            }
+                   } else {
+                        mTwoPane = false;
+        }
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+      //  Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+      //  setSupportActionBar(toolbar);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -53,5 +73,35 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+
+    @Override
+    public void onItemSelected(Uri contentUri) {
+                if (mTwoPane) {
+                        // In two-pane mode, show the detail view in this activity by
+                                // adding or replacing the detail fragment using a
+                                        // fragment transaction.
+                                                Bundle args = new Bundle();
+                        args.putParcelable(DetailActivityFragment.DETAIL_URI, contentUri);
+
+                                DetailActivityFragment fragment = new DetailActivityFragment();
+                        fragment.setArguments(args);
+
+                                getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.weather_detail_container, fragment, DETAILFRAGMENT_TAG)
+                                        .commit();
+                    } else {
+                        Intent intent = new Intent(this, DetailActivity.class)
+                                        .setData(contentUri);
+                        startActivity(intent);
+                    }
+
     }
 }

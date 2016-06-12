@@ -16,6 +16,7 @@ public class YouTubePlayerActivity extends YouTubeBaseActivity implements YouTub
 
     // YouTube player view
     private YouTubePlayerView youTubeView;
+    private String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,6 @@ public class YouTubePlayerActivity extends YouTubeBaseActivity implements YouTub
 
         // Initializing video player with developer key
         youTubeView.initialize(Config.DEVELOPER_KEY, this);
-
 
     }
 

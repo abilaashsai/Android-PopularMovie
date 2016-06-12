@@ -37,6 +37,10 @@
                 android:value="MainActivity" />
         </activity>
         <activity android:name=".YouTubePlayerActivity"></activity>
+                <provider
+                    android:authorities="app.com.example.android.popularmovies"
+                    android:name="app.com.example.android.popularmovies.data.MovieProvider" />
+
     </application>
 
 </manifest>

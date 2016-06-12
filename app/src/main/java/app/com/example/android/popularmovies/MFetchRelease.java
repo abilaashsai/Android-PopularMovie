@@ -20,6 +20,7 @@ public class MFetchRelease extends AsyncTask<String, Void, String[]> {
         this.mainActivityFragment = mainActivityFragment;
     }
 
+
     @Override
     protected String[] doInBackground(String... params) {
         // These two need to be declared outside the try/catch
@@ -29,13 +30,13 @@ public class MFetchRelease extends AsyncTask<String, Void, String[]> {
 
         try {
 
+
             String baseUrl = "http://api.themoviedb.org/3/movie/" + params[0] + "/";
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-
             PopularMovieUrl service = retrofit.create(PopularMovieUrl.class);
             call = service.getUser(BuildConfig.OPEN_MOVIE_DB_API_KEY);
             Response<JsonWork> response = call.execute();
@@ -44,6 +45,11 @@ public class MFetchRelease extends AsyncTask<String, Void, String[]> {
                 String imageUrl = "http://image.tmdb.org/t/p/w500/" + response.body().getResults().get(i).getPosterPath();
                 mStringArray[i] = imageUrl;
             }
+
+            // Did our content observer get called?  Students:  If this fails, your insert location
+            // isn't calling getContext().getContentResolver().notifyChange(uri, null);
+
+
             return mStringArray;
         } catch (Exception e) {
             Log.e(LOG_TAG, "Error ", e);
@@ -60,7 +66,6 @@ public class MFetchRelease extends AsyncTask<String, Void, String[]> {
     @Override
     protected void onPostExecute(String[] result) {
         super.onPostExecute(result);
-
         try {
             if (result != null) {
                 mainActivityFragment.movieUpdate.clear();
@@ -68,8 +73,6 @@ public class MFetchRelease extends AsyncTask<String, Void, String[]> {
 
             for (String strs : result) {
                 mainActivityFragment.movieUpdate.add(strs);
-
-
             }
             mainActivityFragment.imageAdapter.notifyDataSetChanged();
         } catch (Exception e) {
