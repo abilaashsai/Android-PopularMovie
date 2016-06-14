@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,26 +27,45 @@ import app.com.example.android.popularmovies.data.MovieContract;
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment {
+     ImageAdapter imageAdapter;
+
+
+    private GridView mGridView;
+    private int mPosition=11;
+    private static final String SELECTED_KEY = "selected_position";
+
     List<String> movieUpdate;
-    ImageAdapter imageAdapter;
     TextView sort_order_det;
     String join;
-        /**
-          * A callback interface that all activities containing this fragment must
-          * implement. This mechanism allows activities to be notified of item
-          * selections.
-          */
-                public interface Callback {
-                /**
-                  * DetailFragmentCallback for when an item has been selected.
-                  */
-                        public void onItemSelected(Uri selected);
-            }
 
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callback {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        public void onItemSelected(Uri selected);
+    }
 
 
     public MainActivityFragment() {
     }
+
+//    @Override
+//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+//
+//        if (mPosition != GridView.INVALID_POSITION) {
+//            // If we don't need to restart the loader, and there's a desired position to restore
+//            // to, do so now.
+//            mGridView.smoothScrollToPosition(mPosition);
+//        }else{
+//            Log.v("hai","else on activity created"+mPosition);
+//        }
+//        super.onActivityCreated(savedInstanceState);
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +106,7 @@ public class MainActivityFragment extends Fragment {
 //                fetchRelease.cancel(true);
 //            }
             fetchRelease.execute(join);
+            mGridView.setSelection(11);
         } else if (join.equals("favourite")) {
 
 
@@ -105,6 +126,9 @@ public class MainActivityFragment extends Fragment {
             }
             cursor.close();
             mFetchFavourite.execute(image);
+            mGridView.setSelection(11);
+            mGridView.smoothScrollToPosition(1111);
+
         }
     }
 
@@ -134,44 +158,96 @@ public class MainActivityFragment extends Fragment {
 
         super.onStart();
         updateMovie();
-    }
+ }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View rootview = inflater.inflate(R.layout.fragment_main, container, false);
-
-
+//        mPosition=15;
+        Log.v("hai","oncreateview"+mPosition);
         sort_order_det = (TextView) rootview.findViewById(R.id.sort_order_detail);
 
         movieUpdate = new ArrayList<String>(new ArrayList<String>());
         imageAdapter = new ImageAdapter(getContext(), (ArrayList<String>) movieUpdate);
         // Instance of ImageAdapter Class
-        GridView gridView = (GridView) rootview.findViewById(R.id.grid_view);
+        mGridView = (GridView) rootview.findViewById(R.id.grid_view);
 
-        gridView.setAdapter(imageAdapter);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mGridView.setAdapter(imageAdapter);
+
+        mGridView.setSelection(15);
+
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String pass = (String) imageAdapter.getItem(position);
-               // String extra_url = join.equals("favourite") ? "popular" : join;
+                // String extra_url = join.equals("favourite") ? "popular" : join;
 //                Intent intent = new Intent(getActivity(), DetailActivity.class);
 //                Bundle extras = new Bundle();
 //                extras.putString("EXTRA_IMG", pass);
 //                extras.putString("EXTRA_URL", extra_url);
 //                intent.putExtras(extras);
 //                startActivity(intent);
+    ((Callback) getActivity())
+           .onItemSelected(Uri.parse(pass)
+            );
 
-                                    ((Callback) getActivity())
-                                                    .onItemSelected(Uri.parse(pass)
-                );
+              //  mPosition = position;
+                //mPosition=mGridView.getFirstVisiblePosition();
+
+                Log.v("hai","position inside"+ mPosition);
 
             }
         });
 
 
+//        if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
+//            // The listview probably hasn't even been populated yet.  Actually perform the
+//            // swapout in onLoadFinished.
+//            Log.v("hai dude","if");
+//            mPosition = savedInstanceState.getInt(SELECTED_KEY);
+//            Log.v("hai","savedinstance"+mPosition);
+//        }else{
+//            Log.v("hai dude","else");
+//        }
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
+            // The listview probably hasn't even been populated yet.  Actually perform the
+            // swapout in onLoadFinished.
+            Log.v("hai dude","if");
+            mPosition = savedInstanceState.getInt(SELECTED_KEY);
+            Log.v("hai","savedinstance"+mPosition);
+        }else{
+            Log.v("hai dude","else");
+        }
+       // if (mPosition != GridView.INVALID_POSITION) {
+            // If we don't need to restart the loader, and there's a desired position to restore
+            // to, do so now.
+            mGridView.smoothScrollToPosition(mPosition);
+       //     Log.v("hai","yeah"+mPosition);
+       // }else{
+
+         //   Log.v("hai","else on activity created 11"+mPosition);
+        //}
+        mGridView.setSelection(11);
+        Log.v("hai","position inside"+ mPosition);
+
+
+
         return rootview;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // When tablets rotate, the currently selected list item needs to be saved.
+        // When no item is selected, mPosition will be set to Listview.INVALID_POSITION,
+        // so check for that before storing.
+        if (mPosition != GridView.INVALID_POSITION) {
+            Log.v("hai saved","llll"+mPosition);
+            outState.putInt(SELECTED_KEY, mPosition);
+        }
+        super.onSaveInstanceState(outState);
+    }
 
 }

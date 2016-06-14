@@ -54,6 +54,7 @@ public class MFetchFavourite extends AsyncTask<ArrayList<String>, Void, ArrayLis
                 mainActivityFragment.movieUpdate.add(strs);
             }
             mainActivityFragment.imageAdapter.notifyDataSetChanged();
+
         } catch (Exception e) {
             Log.e(LOG_TAG, "Error on post execute", e);
 
