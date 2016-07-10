@@ -1,9 +1,21 @@
 package app.com.example.android.popularmovies;
 
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.squareup.picasso.Picasso;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.ByteBuffer;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -17,15 +29,16 @@ public class DFetchData extends AsyncTask<String, Void, Void> {
 
     private DetailActivityFragment detailActivityFragment;
     private final String LOG_TAG = DFetchData.class.getSimpleName();
-    String original_title;
-    String plot_synopsis;
-    String user_rating;
-    String release_date;
-    String icon;
-    String trailer_l;
+    public static String original_title;
+    public static String plot_synopsis;
+    public static String user_rating;
+    public static String release_date;
+    public static String icon;
+    public static String trailer_l;
+    public static byte[] bytes;
     Call<JsonWork> call;
     Call<TrailerFetch> trailerFetchCall;
-
+    static String mForecast;
 
     public DFetchData(DetailActivityFragment detailActivityFragment) {
         this.detailActivityFragment = detailActivityFragment;
@@ -68,7 +81,6 @@ public class DFetchData extends AsyncTask<String, Void, Void> {
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
 
-
                     PopularMovieUrl_Trailer trailer_service = trailer_retrofit.create(PopularMovieUrl_Trailer.class);
 
                     trailerFetchCall = trailer_service.getUser(BuildConfig.OPEN_MOVIE_DB_API_KEY);
@@ -81,8 +93,15 @@ public class DFetchData extends AsyncTask<String, Void, Void> {
                     release_date = response.body().getResults().get(i).getReleaseDate();
 
                     icon = response.body().getResults().get(i).getBackdropPath();
+                    URL url=new URL("http://image.tmdb.org/t/p/w500/" + icon);
+                    //byte[] logoImage = getLogoImage("http://image.tmdb.org/t/p/w500/" + icon);
+                    Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bmp.compress(Bitmap.CompressFormat.PNG, 0, stream);
+                    byte[] byteArray = stream.toByteArray();
 
+                    bytes=stream.toByteArray();
                     break;
                 }
 
@@ -104,15 +123,17 @@ public class DFetchData extends AsyncTask<String, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         try {
+
             Config.YOUTUBE_VIDEO_CODE = trailer_l;
             detailActivityFragment.showYouTubeImageButton();
             detailActivityFragment.original_t.setText(original_title);
             detailActivityFragment.plot_s.setText(plot_synopsis);
             detailActivityFragment.user_r.setText(user_rating);
             detailActivityFragment.release_d.setText(release_date);
-
+            mForecast = String.format("%s - %s - %s", original_title, user_rating, release_date);
             // detailActivityFragment.trailer_vid.setVideoPath(trailer_l);
-            Picasso.with(detailActivityFragment.getContext())
+
+                  Picasso.with(detailActivityFragment.getContext())
                     .load("http://image.tmdb.org/t/p/w185/" + icon)
                     .into(detailActivityFragment.movie_p);
         } catch (Exception e) {
@@ -120,4 +141,29 @@ public class DFetchData extends AsyncTask<String, Void, Void> {
 
         }
     }
+
+
+//    private byte[] getLogoImage(String url){
+//        try {
+//            URL imageUrl = new URL(url);
+//            URLConnection ucon = imageUrl.openConnection();
+//
+//            InputStream is = ucon.getInputStream();
+//            BufferedInputStream bis = new BufferedInputStream(is);
+//            //ByteArrayInputStream byteArrayInputStream=new ByteArrayInputStream(500);
+//           // ByteArrayBuffer
+//           // ByteArrayInputStream byteArrayInputStream=new ByteArrayInputStream(500);
+//
+//            ByteArrayBuffer baf = new ByteArrayBuffer(500);
+//            int current = 0;
+//            while ((current = bis.read()) != -1) {
+//                baf.append((byte) current);
+//            }
+//
+//            return baf.toByteArray();
+//        } catch (Exception e) {
+//            Log.d("ImageManager", "Error: " + e.toString());
+//        }
+//        return null;
+//    }
 }

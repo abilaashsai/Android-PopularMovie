@@ -18,10 +18,12 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
 import java.util.List;
+import java.util.prefs.PreferenceChangeListener;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -44,6 +46,7 @@ public class SettingsActivity extends PreferenceActivity {
     /**
      * Set up the {@link android.app.ActionBar}, if the API is available.
      */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void setupActionBar() {
         ActionBar actionBar = getActionBar();
         if (actionBar != null) {
@@ -56,9 +59,7 @@ public class SettingsActivity extends PreferenceActivity {
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            if (!super.onMenuItemSelected(featureId, item)) {
-                NavUtils.navigateUpFromSameTask(this);
-            }
+            onBackPressed();
             return true;
         }
         return super.onMenuItemSelected(featureId, item);
@@ -70,6 +71,7 @@ public class SettingsActivity extends PreferenceActivity {
      */
     @Override
     public boolean onIsMultiPane() {
+
         return isXLargeTablet(this);
     }
 
@@ -78,6 +80,7 @@ public class SettingsActivity extends PreferenceActivity {
      * example, 10" tablets are extra-large.
      */
     private static boolean isXLargeTablet(Context context) {
+
         return (context.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
@@ -191,7 +194,7 @@ public class SettingsActivity extends PreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-         //   bindPreferenceSummaryToValue(findPreference("example_text"));
+            //   bindPreferenceSummaryToValue(findPreference("example_text"));
             bindPreferenceSummaryToValue(findPreference("sort_order"));
         }
 
@@ -227,13 +230,28 @@ public class SettingsActivity extends PreferenceActivity {
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
-            int id = item.getItemId();
-            if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), SettingsActivity.class));
-                return true;
+            switch (item.getItemId()) {
+                case android.R.id.home:
+                    //  NavUtils.navigateUpFromSameTask(this);
+                    return false;
+                default:
+                    return super.onOptionsItemSelected(item);
             }
-            return super.onOptionsItemSelected(item);
         }
+//        @Override
+//        public boolean onOptionsItemSelected(MenuItem item) {
+//            int id = item.getItemId();
+//            if (id == android.R.id.home) {
+//                startActivity(new Intent(getActivity(), SettingsActivity.class));
+//                return true;
+//            }
+//            return super.onOptionsItemSelected(item);
+//        }
+//        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+//        @Override
+//        public Intent getParentActivityIntent() {
+//            return super.getParentActivityIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        }
     }
 
     /**

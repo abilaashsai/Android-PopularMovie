@@ -217,7 +217,7 @@ you have implemented delete functionality there.
 
             ContentValues updatedValues = new ContentValues(values);
             updatedValues.put(MovieEntry._ID, locationRowId);
-            updatedValues.put(MovieEntry.COLUMN_MOVIE_IMAGE, "ABB");
+       //     updatedValues.put(MovieEntry.COLUMN_MOVIE_IMAGE, "ABB");
 
             // Create a cursor with observer to make sure that the content provider is notifying
             // the observers as expected
@@ -333,7 +333,7 @@ you have implemented delete functionality there.
 
         for (int i = 0; i < BULK_INSERT_RECORDS_TO_INSERT; i++, currentTestMovieName += millisecondsInADay) {
             ContentValues weatherValues = new ContentValues();
-            weatherValues.put(MovieEntry.COLUMN_MOVIE_IMAGE, currentTestMovieName);
+            //weatherValues.put(MovieEntry.COLUMN_MOVIE_IMAGE, currentTestMovieName);
             weatherValues.put(MovieEntry.COLUMN_MOVIE_URL, locationRowId);
             returnContentValues[i] = weatherValues;
         }

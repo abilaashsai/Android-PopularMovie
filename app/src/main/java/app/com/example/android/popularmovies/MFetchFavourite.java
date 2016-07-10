@@ -1,10 +1,14 @@
 package app.com.example.android.popularmovies;
 
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import app.com.example.android.popularmovies.data.MovieContract;
 import retrofit2.Call;
 
 public class MFetchFavourite extends AsyncTask<ArrayList<String>, Void, ArrayList<String>> {
@@ -27,6 +31,8 @@ public class MFetchFavourite extends AsyncTask<ArrayList<String>, Void, ArrayLis
             for (String image:
                  params[0]) {
                 String imageUrl = image;
+                Log.v("hai","hai"+ imageUrl);
+
                 mStringArray.add(imageUrl);
             }
 

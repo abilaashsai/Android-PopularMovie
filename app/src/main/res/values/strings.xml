@@ -7,11 +7,17 @@
     <string name="rating">Rating:</string>
     <string name="release_date">Release Date:</string>
     <string name="overview">Overview:</string>
+    <string name="action_share">Share</string>
+
 
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
+    <!-- SyncAdapter related -->
+    <string name="sync_account_type">popularmovies.example.com</string>
+    <string name="content_authority">app.com.example.android.popularmovies</string>
+
 
     <string name="pref_title_social_recommendations">Enable social recommendations</string>
     <string name="pref_description_social_recommendations">Recommendations for people to contact

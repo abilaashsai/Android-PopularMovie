@@ -17,9 +17,6 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
-/**
- * Created by GSA on 05-06-2016.
- */
 public class TestUtilities {
     public static String TEST_MOVIE_NAME = "ABCD";
     public static String TEST_MOVIE_URL = "aaa";
@@ -28,7 +25,7 @@ public class TestUtilities {
         // Create a new map of values, where column names are the keys
         ContentValues testValues = new ContentValues();
         testValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_URL, TEST_MOVIE_URL);
-        testValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_IMAGE, TEST_MOVIE_NAME);
+    //    testValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_IMAGE, TEST_MOVIE_NAME);
         return testValues;
     }
 
