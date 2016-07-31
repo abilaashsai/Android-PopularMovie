@@ -17,6 +17,16 @@ User can change the sort order between most popular/ highest rated/ favourite mo
 
 Settings -> General -> Sort Order 
 
+
+Libraries to to make life easier.
+
+1) Picasso has been used to load images.
+
+2) Butterknife package to reduce lines of code.
+
+3) Retrofit to obtain json string easily.
+
+
 SCREENSHOTS
 
 One Pane
