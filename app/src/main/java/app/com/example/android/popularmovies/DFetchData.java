@@ -22,9 +22,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by GSA on 17-04-2016.
- */
 public class DFetchData extends AsyncTask<String, Void, Void> {
 
     private DetailActivityFragment detailActivityFragment;
@@ -48,16 +45,7 @@ public class DFetchData extends AsyncTask<String, Void, Void> {
 
     @Override
     protected Void doInBackground(String... params) {
-        // These two need to be declared outside the try/catch
-        // so that they can be closed in the finally block.
-
-        // Will contain the raw JSON response as a string.
-
         try {
-
-            // Construct the URL for the OpenWeatherMap query
-            // Possible parameters are avaiable at OWM's forecast API page, at
-            // http://openweathermap.org/API#forecast
             String baseUrl = "http://api.themoviedb.org/3/movie/" + params[0] + "/";
 
             Retrofit retrofit = new Retrofit.Builder()
@@ -68,7 +56,6 @@ public class DFetchData extends AsyncTask<String, Void, Void> {
 
             call = service.getUser(BuildConfig.OPEN_MOVIE_DB_API_KEY);
             Response<JsonWork> response = call.execute();
-            String[] mStringArray = new String[response.body().getResults().size()];
             for (int i = 0; i < response.body().getResults().size(); i++) {
                 if (detailActivityFragment.img_string.contains(response.body().getResults().get(i).getPosterPath())) {
                     original_title = response.body().getResults().get(i).getOriginalTitle();
@@ -84,24 +71,16 @@ public class DFetchData extends AsyncTask<String, Void, Void> {
                     PopularMovieUrl_Trailer trailer_service = trailer_retrofit.create(PopularMovieUrl_Trailer.class);
 
                     trailerFetchCall = trailer_service.getUser(BuildConfig.OPEN_MOVIE_DB_API_KEY);
-
                     Response<TrailerFetch> trailer_fetch = trailerFetchCall.execute();
-
                     trailer_l = trailer_fetch.body().getResults().get(0).getKey();
                     user_rating = user_rat;
-
                     release_date = response.body().getResults().get(i).getReleaseDate();
-
                     icon = response.body().getResults().get(i).getBackdropPath();
-                    URL url=new URL("http://image.tmdb.org/t/p/w500/" + icon);
-                    //byte[] logoImage = getLogoImage("http://image.tmdb.org/t/p/w500/" + icon);
+                    URL url = new URL("http://image.tmdb.org/t/p/w500/" + icon);
                     Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     bmp.compress(Bitmap.CompressFormat.PNG, 0, stream);
-                    byte[] byteArray = stream.toByteArray();
-
-                    bytes=stream.toByteArray();
+                    bytes = stream.toByteArray();
                     break;
                 }
 
@@ -130,40 +109,13 @@ public class DFetchData extends AsyncTask<String, Void, Void> {
             detailActivityFragment.plot_s.setText(plot_synopsis);
             detailActivityFragment.user_r.setText(user_rating);
             detailActivityFragment.release_d.setText(release_date);
-            mForecast = String.format("%s - %s - %s", original_title, user_rating, release_date);
-            // detailActivityFragment.trailer_vid.setVideoPath(trailer_l);
+            mForecast = String.format("%s - %s", original_title, trailer_l);
 
-                  Picasso.with(detailActivityFragment.getContext())
+            Picasso.with(detailActivityFragment.getContext())
                     .load("http://image.tmdb.org/t/p/w185/" + icon)
                     .into(detailActivityFragment.movie_p);
         } catch (Exception e) {
             Log.e(LOG_TAG, "Error on post execute", e);
-
         }
     }
-
-
-//    private byte[] getLogoImage(String url){
-//        try {
-//            URL imageUrl = new URL(url);
-//            URLConnection ucon = imageUrl.openConnection();
-//
-//            InputStream is = ucon.getInputStream();
-//            BufferedInputStream bis = new BufferedInputStream(is);
-//            //ByteArrayInputStream byteArrayInputStream=new ByteArrayInputStream(500);
-//           // ByteArrayBuffer
-//           // ByteArrayInputStream byteArrayInputStream=new ByteArrayInputStream(500);
-//
-//            ByteArrayBuffer baf = new ByteArrayBuffer(500);
-//            int current = 0;
-//            while ((current = bis.read()) != -1) {
-//                baf.append((byte) current);
-//            }
-//
-//            return baf.toByteArray();
-//        } catch (Exception e) {
-//            Log.d("ImageManager", "Error: " + e.toString());
-//        }
-//        return null;
-//    }
 }

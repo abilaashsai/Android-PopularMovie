@@ -28,11 +28,6 @@ public class MFetchRelease extends AsyncTask<String, Void, String[]> {
 
     @Override
     protected String[] doInBackground(String... params) {
-        // These two need to be declared outside the try/catch
-        // so that they can be closed in the finally block.
-
-        // Will contain the raw JSON response as a string.
-
         try {
 
 
@@ -49,25 +44,14 @@ public class MFetchRelease extends AsyncTask<String, Void, String[]> {
             for (int i = 0; i < response.body().getResults().size(); i++) {
                 String imageUrl = "http://image.tmdb.org/t/p/w500/" + response.body().getResults().get(i).getPosterPath();
                 mStringArray[i] = imageUrl;
-//                URL ur= new URL(imageUrl);
-  //              Bitmap bmp = BitmapFactory.decodeStream(uri.openConnection().getInputStream());
-
             }
-
-            // Did our content observer get called?  Students:  If this fails, your insert location
-            // isn't calling getContext().getContentResolver().notifyChange(uri, null);
-
             return mStringArray;
         } catch (Exception e) {
             Log.e(LOG_TAG, "Error ", e);
-            // If the code didn't successfully get the weather data, there's no point in attemping
-            // to parse it.
             return null;
         } finally {
             call.cancel();
         }
-
-
     }
 
     @Override

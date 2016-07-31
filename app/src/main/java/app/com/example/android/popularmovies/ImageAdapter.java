@@ -18,27 +18,18 @@ import java.util.List;
 
 import app.com.example.android.popularmovies.data.MovieContract;
 
-/**
- * Created by GSA on 11-04-2016.
- */
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
     private List aa = new ArrayList();
     private List<Bitmap> dd = new ArrayList<>();
-    // Keep all Images in array
 
-
-    // Constructor
     public ImageAdapter(Context c, ArrayList<String> mTum) {
         mContext = c;
         aa = mTum;
-
     }
-
 
     @Override
     public int getCount() {
-
         return aa.size();
     }
 
@@ -87,13 +78,8 @@ public class ImageAdapter extends BaseAdapter {
                     .error(R.drawable.no_data)
                     .into((ImageView) view);
         }
-
         cursor.close();
-
-
         return view;
-
-
     }
 
 }

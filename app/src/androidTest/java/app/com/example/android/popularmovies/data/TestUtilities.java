@@ -18,27 +18,38 @@ import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
 public class TestUtilities {
-    public static String TEST_MOVIE_NAME = "ABCD";
-    public static String TEST_MOVIE_URL = "aaa";
 
-    static ContentValues createNorthPoleLocationValues() {
-        // Create a new map of values, where column names are the keys
+    public static final String TEST_TABLE_NAME = "movie";
+    public static final String TEST_COLUMN_MOVIE_TITLE = "movie_title";
+    public static final String TEST_COLUMN_MOVIE_URL = "movie_url";
+    public static final String TEST_COLUMN_MOVIE_POSTER = "movie_poster";
+    public static final String TEST_COLUMN_MOVIE_SYNOPSIS = "movie_synopsis";
+    public static final String TEST_COLUMN_MOVIE_USER_RATING = "movie_user_rating";
+    public static final String TEST_COLUMN_MOVIE_RELEASE_DATE = "movie_release_date";
+    public static final String TEST_COLUMN_MOVIE_TRAILER = "movie_trailer";
+
+    public static final String COLUMN_MOVIE_ID = "movie_id";
+
+    static ContentValues createMovieValues() {
         ContentValues testValues = new ContentValues();
-        testValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_URL, TEST_MOVIE_URL);
-    //    testValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_IMAGE, TEST_MOVIE_NAME);
+        testValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_TITLE, TEST_COLUMN_MOVIE_TITLE);
+        testValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_URL, TEST_COLUMN_MOVIE_URL);
+        testValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_POSTER, TEST_COLUMN_MOVIE_POSTER);
+        testValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_SYNOPSIS, TEST_COLUMN_MOVIE_SYNOPSIS);
+        testValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_USER_RATING, TEST_COLUMN_MOVIE_USER_RATING);
+        testValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE, TEST_COLUMN_MOVIE_RELEASE_DATE);
+        testValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_TRAILER, TEST_COLUMN_MOVIE_TRAILER);
         return testValues;
     }
 
-    static long insertNorthPoleLocationValues(Context context) {
-        // insert our test records into the database
+    static long insertMovieValues(Context context) {
         MovieDbHelper dbHelper = new MovieDbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues testValues = TestUtilities.createNorthPoleLocationValues();
+        ContentValues testValues = TestUtilities.createMovieValues();
 
         long locationRowId;
         locationRowId = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, testValues);
 
-        // Verify we got a row back.
         assertTrue("Error: Failure to insert North Pole Location Values", locationRowId != -1);
 
         return locationRowId;
@@ -77,23 +88,8 @@ public class TestUtilities {
             super(new Handler(ht.getLooper()));
             mHT = ht;
         }
-
-
-    public void waitForNotificationOrFail() {
-        // Note: The PollingCheck class is taken from the Android CTS (Compatibility Test Suite).
-        // It's useful to look at the Android CTS source for ideas on how to test your Android
-        // applications.  The reason that PollingCheck works is that, by default, the JUnit
-        // testing framework is not running on the main Android application thread.
-        new PollingCheck(5000) {
-            @Override
-            protected boolean check() {
-                return mContentChanged;
-            }
-        }.run();
-        mHT.quit();
     }
 
-}
     static TestContentObserver getTestContentObserver() {
         return TestContentObserver.getTestContentObserver();
     }

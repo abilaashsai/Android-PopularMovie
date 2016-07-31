@@ -20,13 +20,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
         setContentView(R.layout.activity_main);
         if (findViewById(R.id.weather_detail_container) != null) {
-            // The detail container view will be present only in the large-screen layouts
-            // (res/layout-sw600dp). If this view is present, then the activity should be
-            // in two-pane mode.
             mTwoPane = true;
-            // In two-pane mode, show the detail view in this activity by
-            // adding or replacing the detail fragment using a
-            // fragment transaction.
             if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.weather_detail_container, new DetailActivityFragment())
@@ -37,56 +31,36 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             getSupportActionBar().setElevation(0f);
 
         }
-
-
-        //  Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //  setSupportActionBar(toolbar);
-
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
     }
-
 
     @Override
     public void onItemSelected(Uri contentUri) {
         if (mTwoPane) {
-            // In two-pane mode, show the detail view in this activity by
-            // adding or replacing the detail fragment using a
-            // fragment transaction.
             Bundle args = new Bundle();
             args.putParcelable(DetailActivityFragment.DETAIL_URI, contentUri);
-
             DetailActivityFragment fragment = new DetailActivityFragment();
             fragment.setArguments(args);
-
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.weather_detail_container, fragment, DETAILFRAGMENT_TAG)
                     .commit();
@@ -95,6 +69,5 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
                     .setData(contentUri);
             startActivity(intent);
         }
-
     }
 }
