@@ -31,10 +31,10 @@ SCREENSHOTS
 
 One Pane
 
-![Alt text](https://github.com/abilaashsai/Popular-Movies-2/blob/master/app/src/main/res/drawable/MainUI.png "Main UI")
+![Alt text](https://github.com/abilaashsai/Popular-Movies-2/blob/master/MainUI.png "Main UI")
 
 Two Pane
 
-![Alt text](https://github.com/abilaashsai/Popular-Movies/blob/master/img_3.png "Main UI")
+![Alt text](https://github.com/abilaashsai/Popular-Movies-2/blob/master/TwoPane.png "Main UI")
 
 
