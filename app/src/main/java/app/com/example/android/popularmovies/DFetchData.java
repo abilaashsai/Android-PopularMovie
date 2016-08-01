@@ -32,9 +32,11 @@ public class DFetchData extends AsyncTask<String, Void, Void> {
     public static String release_date;
     public static String icon;
     public static String trailer_l;
+    public static String userReviewString = "";
     public static byte[] bytes;
     Call<JsonWork> call;
     Call<TrailerFetch> trailerFetchCall;
+    Call<UserReview> userReviewCall;
     static String mForecast;
 
     public DFetchData(DetailActivityFragment detailActivityFragment) {
@@ -67,12 +69,19 @@ public class DFetchData extends AsyncTask<String, Void, Void> {
                             .baseUrl(trailer_baseUrl)
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
-
                     PopularMovieUrl_Trailer trailer_service = trailer_retrofit.create(PopularMovieUrl_Trailer.class);
+                    UserReviewUrl user_review_url = trailer_retrofit.create(UserReviewUrl.class);
 
                     trailerFetchCall = trailer_service.getUser(BuildConfig.OPEN_MOVIE_DB_API_KEY);
+                    userReviewCall = user_review_url.getUser(BuildConfig.OPEN_MOVIE_DB_API_KEY);
+
                     Response<TrailerFetch> trailer_fetch = trailerFetchCall.execute();
+                    Response<UserReview> userReviewResponse = userReviewCall.execute();
+
                     trailer_l = trailer_fetch.body().getResults().get(0).getKey();
+                    for (int content = 0; content < userReviewResponse.body().getResults().size(); content++) {
+                        userReviewString += "* " + userReviewResponse.body().getResults().get(content).getContent() + "\n" + "\n";
+                    }
                     user_rating = user_rat;
                     release_date = response.body().getResults().get(i).getReleaseDate();
                     icon = response.body().getResults().get(i).getBackdropPath();
@@ -109,6 +118,8 @@ public class DFetchData extends AsyncTask<String, Void, Void> {
             detailActivityFragment.plot_s.setText(plot_synopsis);
             detailActivityFragment.user_r.setText(user_rating);
             detailActivityFragment.release_d.setText(release_date);
+            detailActivityFragment.user_review.setText(userReviewString);
+            detailActivityFragment.user_review_title.setText("Review");
             mForecast = String.format("%s - %s", original_title, trailer_l);
 
             Picasso.with(detailActivityFragment.getContext())

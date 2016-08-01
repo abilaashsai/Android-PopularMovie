@@ -21,8 +21,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
@@ -66,9 +68,14 @@ public class DetailActivityFragment extends Fragment {
     ImageView movie_p;
     @InjectView(R.id.trailer_button)
     ImageButton trailer_but;
+    @InjectView(R.id.user_review)
+    TextView user_review;
 
     @InjectView(R.id.favourite)
     ImageView fav_button;
+
+    @InjectView(R.id.user_review_title)
+    TextView user_review_title;
 
     private String url;
     private String image;
@@ -101,6 +108,7 @@ public class DetailActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         ButterKnife.inject(this, rootView);
+
         Bundle arguments = getArguments();
         if (arguments != null) {
             mUri = arguments.getParcelable(DetailActivityFragment.DETAIL_URI);
@@ -178,8 +186,6 @@ public class DetailActivityFragment extends Fragment {
                     startActivity(intent1);
                 }
             });
-//            DFetchData fetchData = new DFetchData(this);
-//            fetchData.execute(url_string);
         }
         return rootView;
     }
