@@ -57,4 +57,4 @@ Two Pane
 
 License
 -------
-The contents of this repository are covered under the [MIT License]().
+The contents of this repository are covered under the [MIT License](https://github.com/abilaashsai/Android-PopularMovie/blob/master/LICENSE).
