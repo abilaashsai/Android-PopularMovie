@@ -4,9 +4,9 @@
 Popular Movies uses [themoviedb](https://www.themoviedb.org/) API to retrieve the information. This app let the user to filter between 
 - Most Popular
 - Highest Rated 
-- Favourite Movies 
+- Favorite Movies 
 
-Favourite movies can be accessed even without internet as it will be stored in local Database. Responsive Design is accomplished. Depending on single plane or two pane, the UI changes to fit more information on the screen. 
+Favorite movies can be accessed even without internet as it will be stored in local Database. Responsive Design is accomplished. Depending on single plane or two pane, the UI changes to fit more information on the screen. 
 
 ##Libraries
 -----------
@@ -35,7 +35,7 @@ Favourite movies can be accessed even without internet as it will be stored in l
   I use Android Studio. Here you have to _Import_ the project and _Run_ on _mobile_ ot _tablet_.
 
 - **Playing with Functionality**
-  User can change the sort order between most popular/ highest rated/ favourite movies in 
+  User can change the sort order between most popular/ highest rated/ favorite movies in 
   Settings -> General -> Sort Order 
 
 ##Contribution
