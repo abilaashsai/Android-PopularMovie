@@ -6,7 +6,7 @@ Popular Movies uses [themoviedb](https://www.themoviedb.org/) API to retrieve th
 - Highest Rated 
 - Favorite Movies 
 
-Favorite movies can be accessed even without internet as it will be stored in local Database. Responsive Design is accomplished. Depending on single plane or two pane, the UI changes to fit more information on the screen. 
+Favorite movies can be accessed even without internet as it will be stored in local Database. Responsive Design is accomplished. Depending on single pane or two pane, the UI changes to fit more information on the screen. 
 
 ##Libraries
 -----------
