@@ -46,11 +46,11 @@ submitting a pull request through GitHub.
 ##Screenshot
 -------
 
-One Pane
+**One Pane**
 
 ![Alt text](https://github.com/abilaashsai/Popular-Movies-2/blob/master/MainUI.png "Main UI")
 
-Two Pane
+**Two Pane**
 
 ![Alt text](https://github.com/abilaashsai/Popular-Movies-2/blob/master/TwoPane.png "Main UI")
 
